@@ -10,6 +10,7 @@ import os
 # app definition
 app = Flask(__name__)
 
+<<<<<<< HEAD
 # database location
 # DATABASE_PATH = 'C:/Users/u065505/Documents/sandona/mypy/gasfood/food.db'
 
@@ -17,6 +18,10 @@ app = Flask(__name__)
 # app.config['SQLALCHEMY_DATABASE_URI'] = 'sqlite:///' + DATABASE_PATH
 app.config['SQLALCHEMY_DATABASE_URI'] = 'mysql+mysqlconnector://root:mSVCivGq4m22uLGjZLKD@containers-us-west-204.railway.app:8059/railway'
 
+=======
+# database config
+app.config['SQLALCHEMY_DATABASE_URI'] = 'mysql+mysqlconnector://root:mSVCivGq4m22uLGjZLKD@containers-us-west-204.railway.app:8059/railway'
+>>>>>>> 976afc0a2d27dca7332df1883db6c33609b14f9a
 app.config['SQLALCHEMY_TRACK_MODIFICATIONS'] = False
 
 # Swagger config
