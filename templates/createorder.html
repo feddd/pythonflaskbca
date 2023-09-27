@@ -21,7 +21,7 @@
                 <input type="date" name="order_date" id="order_date" placeholder="Add Order Date" required>
                 <br>
                 <label for="food_id">Food:</label>               
-                <select onchange='calc()' name="food_id" id="food_id">
+                <select> name="food_id" id="food_id">
                     {% if data_list %}
                         {% for data in data_list %}
                         <option value = {{data.food_id}} >{{ data.name}} - {{ data.price}} </option>
@@ -29,26 +29,8 @@
                         {% endfor %}
                     {% endif %}
                 </select>
-                <label for="price">Price:</label>
-                <input type="text" name="price" id="price" placeholder="Add Price" required>   
-                <br>
                 <label for="quantity">Quantity:</label>
                 <input type="text" name="quantity" id="quantity" placeholder="Add Quantity" required>
-                <br>
-                
-                <script>
-                    function calc() {
-                        id = document.getElementById('food_id').value;
-                        console.log(id);
-                        qty = document.getElementById('quantity').value;
-                        console.log(qty);
-                        prc = document.getElementById('price').value;
-                        jml = qty * prc
-                        document.getElementById('total_price').value = pricjmle;
-                    }
-                </script>   
-                <label for="total_price">Total Price:</label>
-                <input type="text" name="total_price" id="total_price" placeholder="Add Total Price" required>   
                 <br>
                 <input type="submit" value="Add">
             </form>
