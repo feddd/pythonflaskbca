@@ -1,0 +1,72 @@
+<!DOCTYPE html>
+<html lang="id">
+    <head>
+        <meta charset="UTF-8">
+        <meta name="viewport" content="width=device-width, initial-scale=1.0">
+        <title>Delete Food Data</title>
+        <link rel="stylesheet" href="{{ url_for('static', filename='style.css') }}">
+    </head>
+    <body class="ref-theme">
+        <h2>Delete Food </h2>
+        <div class = "form-container">
+            <form action="/deletefood" method="post">
+                <label class="field-label" for="name">Food Name</label>
+                <input type="text" name="name" id="name" placeholder="Food Name">
+                <input type="submit" value="search" class="delete-button" >
+            </form>
+            <a href="/" class="home-button ">Home</a>
+        </div>
+    
+    {% if data_list %}
+    <h3>Record Founded</h3>
+    <table>
+        <thead>
+            <tr>
+                <th>Food ID</th>
+                <th>Food Name</th>
+                <th>Food Price</th>
+                <th>Food Category</th>
+                <th>Action</th>
+            </tr>
+        </thead>
+        <tbody>
+            {% for item in data_list %}
+            <tr>
+                <td>{{ item.food_id}} </td>
+                <td>{{ item.name}} </td>
+                <td>{{ item.price}} </td>
+                <td>{{ item.category}} </td>
+                <td>
+                    <button onclick="confirmDelete('{{ item.food_id}}', '{{item.name}}',
+                     '{{item.price}}', '{{item.category}}')"class="deleteButton">Delete</button>
+                </td>
+            </tr>
+            {% endfor %}
+        </tbody>
+    </table>
+    {% endif %}
+    <script>
+        function confirmDelete(food_id, name) {
+            const isConfirmed = confirm(`Are you sure want to delete ${name}?`);
+            if (isConfirmed){
+                fetch(`/food/${food_id}`,{
+                    method: `DELETE`,
+                })
+                .then(response => response.json())
+                .then(item => {
+                    if(item.message.includes("been removed")){
+                        alert("Record has been removed!");
+                        location.reload();
+                    }else{
+                        alert("Something trouble happen, found it!");
+                    }
+                })
+                .catch(error => {
+                    console.error("Error:", error);
+                    alert("Something troble happen when deleting data, idk why")
+                })
+            }
+        }
+    </script>
+    </body>
+</html>

@@ -1,0 +1,58 @@
+<!DOCTYPE html>
+<html lang="en">
+    <head>
+        <meta charset="UTF-8">
+        <meta name="viewport" content="width=device-width, initial-scale=1.0">
+        <title>Input Data Food</title>
+        <link rel="stylesheet" href="{{ url_for('static', filename='style.css') }}">
+    </head>
+    <body class="blue-theme">
+        <h2>Input New Order Record</h2>
+        <div class="form-container" >
+
+            {% if error %}
+                <p style="color: red;">{{ error}}</p>
+            {% endif%}
+            <form action="/addorder" method="post">
+                <label for="customer_name">Customer Name:</label>
+                <input type="text" name="customer_name" id="customer_name" placeholder="Add Customer Name" required>
+                <br> 
+                <label for="order_date">Order Date:</label>
+                <input type="date" name="order_date" id="order_date" placeholder="Add Order Date" required>
+                <br>
+                <label for="food_id">Food:</label>               
+                <select onchange='calc()' name="food_id" id="food_id">
+                    {% if data_list %}
+                        {% for data in data_list %}
+                        <option value = {{data.food_id}} >{{ data.name}} - {{ data.price}} </option>
+
+                        {% endfor %}
+                    {% endif %}
+                </select>
+                <label for="price">Price:</label>
+                <input type="text" name="price" id="price" placeholder="Add Price" required>   
+                <br>
+                <label for="quantity">Quantity:</label>
+                <input type="text" name="quantity" id="quantity" placeholder="Add Quantity" required>
+                <br>
+                
+                <script>
+                    function calc() {
+                        id = document.getElementById('food_id').value;
+                        console.log(id);
+                        qty = document.getElementById('quantity').value;
+                        console.log(qty);
+                        prc = document.getElementById('price').value;
+                        jml = qty * prc
+                        document.getElementById('total_price').value = pricjmle;
+                    }
+                </script>   
+                <label for="total_price">Total Price:</label>
+                <input type="text" name="total_price" id="total_price" placeholder="Add Total Price" required>   
+                <br>
+                <input type="submit" value="Add">
+            </form>
+            <a href="/" class="home-button yellow-button">Home</a>
+        </div>
+    </body>
+</html>

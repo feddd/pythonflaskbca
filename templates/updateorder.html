@@ -1,0 +1,77 @@
+<!DOCTYPE html>
+<html lang="en">
+    <head>
+        <meta charset="UTF-8">
+        <meta name="viewport" content="width=device-width, initial-scale=1.0">
+        <title>Search and Update Order</title>
+        <link rel="stylesheet" href="{{ url_for('static', filename='style.css') }}">
+    </head>
+    <body class="purple-theme">
+    
+        <h2>Search and Update Order</h2>
+
+        <div class="form-container">
+            <form action="/updateorder" method="post">
+                <label for="name">Order ID:</label>
+                <input type="text" id="order_id" name="order_id" placeholder="Enter order id to search">
+                <input type="submit" value="search" class="update-button" >
+            </form>
+            <a href="/" class="home-button ">Home</a>
+        </div>
+        {% if data_list %}
+        <h3>Data Found:</h3>
+        <table>
+            <tr>
+                <th>Order ID</th>
+                <th>Customer Name</th>
+                <th>Food Name</th>
+                <th>Quantity</th>
+                <th>Total Price</th>
+                <th>Order Date</th>
+                <th>Action</th>
+            </tr>
+            {% for data in data_list %}
+            <tr>
+                <td>{{ data.order_id}} </td>
+                <td>{{ data.customer_name}} </td>
+                <td>{{ data.food_id}} </td>
+                <td>{{ data.quantity}} </td>
+                <td>{{ data.total_price}} </td>
+                <td>{{ data.order_date}} </td>
+                <td>
+                    <button onclick="showUpdateForm('{{ item.order_id}}', '{{item.customer_name}}',
+                     '{{item.food_id}}', '{{item.quantity}}', '{{item.total_price}}', '{{item.order_date}}')"class="updateButton">Update</button>
+                </td>
+            </tr>
+            {% endfor %}
+        </table>
+        <div id="updateForm" style="display:none;">
+            <h3>Update Food</h3>
+            <form action="/update_order" method="post">
+                <input type="hidden" id="updateId" name="order_id">
+                <label class="field-label" for="updateName">Customer Name:</label>
+                <input type="text" id="updateName" name="customer_name" placeholder="New Customer Name" required>
+                <label class="field-label" for="updateFoodId">Food Id:</label>
+                <input type="text" id="updateFoodId" name="food_id" placeholder="New Food" required>
+                <label class="field-label" for="updateQuantity">Quantity:</label>
+                <input type="text" id="updateQuantity" name="quantity" placeholder="New Quantity" required>
+                <input type="submit" value="Submit" class="update-button">
+            </form>
+            
+        </div>
+        <script>
+            function showUpdateForm(order_id, customer_name, food_id, quantity, total_price, order_date) {
+                document.getElementById('updateId').value = order_id;
+                document.getElementById('updateName').value = customer_name;
+                document.getElementById('updateFoodId').value = food_id;
+                document.getElementById('updateQuantity').value = quantity;
+                document.getElementById('updateFoodId').value = total_price;
+                document.getElementById('updateQuantity').value = order_date;
+                document.getElementById('updateForm').style.display = 'block';
+            }
+        </script>
+        {% else %}
+            <p> Food not found </p>
+        {% endif %}
+    </body>
+</html>

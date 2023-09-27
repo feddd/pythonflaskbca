@@ -1,0 +1,39 @@
+openapi: 3.0.0
+info:
+  title: Get Food by ID
+  version: 1.0.0
+tags:
+  - name: Daftar API
+definitions:
+  Karyawan:
+    type: object
+    properties:
+      id_karyawan:
+        type: integer
+        description: Food ID
+      nama_karyawan:
+        type: string
+        description: Food Name
+      cabang_bca:
+        type: float
+        description: Food Price
+      jabatan:
+        type: string
+        description: Food Category
+
+parameters:
+  - name: food_id
+    in: path
+    description: keyword
+    required: true
+    type: integer
+
+response:
+  200:
+    descriptions: Food List based on ID
+    schema:
+      type: array
+      items:
+        $ref: '#/definitions/Food'
+  404:
+    descriptions: Data Not Found

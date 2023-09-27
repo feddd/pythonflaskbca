@@ -1,0 +1,17 @@
+openapi: 3.0.0
+info:
+  title: Delete Food
+  version: 1.0.0
+tags:
+  - name: GasFood API
+parameters:
+  - name: food_id
+    in: path
+    description: Deleted food
+    required: true
+    type: integer
+responses:
+  200:
+    descriptions: Food has been removed
+  404:
+    descriptions: Data not found

@@ -1,0 +1,69 @@
+<!DOCTYPE html>
+<html lang="en">
+    <head>
+        <meta charset="UTF-8">
+        <meta name="viewport" content="width=device-width, initial-scale=1.0">
+        <title>Search and Update Food</title>
+        <link rel="stylesheet" href="{{ url_for('static', filename='style.css') }}">
+    </head>
+    <body class="purple-theme">
+    
+        <h2>Search and Update Food</h2>
+
+        <div class="form-container">
+            <form action="/updatefood" method="post">
+                <label for="name">Food Name:</label>
+                <input type="text" id="name" name="name" placeholder="Enter name to search">
+                <input type="submit" value="search" class="update-button" >
+            </form>
+            <a href="/" class="home-button ">Home</a>
+        </div>
+        {% if data_list %}
+        <h3>Data Found:</h3>
+        <table>
+            <tr>
+                <th>Food ID</th>
+                <th>Food Name</th>
+                <th>Food Price</th>
+                <th>Food Category</th>
+                <th>Action</th>
+            </tr>
+            {% for data in data_list %}
+            <tr>
+                <td>{{ data.food_id}} </td>
+                <td>{{ data.name}} </td>
+                <td>{{ data.price}} </td>
+                <td>{{ data.category}} </td>
+                <td>
+                    <button onclick="showUpdateForm('{{ data.food_id}}', '{{data.name}}',
+                     '{{data.price}}', '{{data.category}}')"class="update-button">Update</button>
+                </td>
+            </tr>
+            {% endfor %}
+        </table>
+        <div id="updateForm" style="display:none;">
+            <h3>Update Food</h3>
+            <form action="/update_food" method="post">
+                <input type="hidden" id="updateId" name="food_id">
+                <label class="field-label" for="updateName">Food Name:</label>
+                <input type="text" id="updateName" name="name" placeholder="New Food Name" required>
+                <label class="field-label" for="updatePrice">Food Price:</label>
+                <input type="text" id="updatePrice" name="price" placeholder="New Price" required>
+                <label class="field-label" for="updateCategory">Food Category:</label>
+                <input type="text" id="updateCategory" name="category" placeholder="New Category" required>
+                <input type="submit" value="Submit" class="update-button">
+            </form>
+            
+        </div>
+        <script>
+            function showUpdateForm(food_id, name, price, category) {
+                document.getElementById('updateId').value = food_id;
+                document.getElementById('updateName').value = name;
+                document.getElementById('updatePrice').value = price;
+                document.getElementById('updateCategory').value = category;
+                document.getElementById('updateForm').style.display = 'block';
+            }
+        </script>
+        {% endif %}
+    </body>
+</html>

@@ -1,0 +1,38 @@
+<!DOCTYPE html>
+<html lang='en'>
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Food Menu</title>
+    <link rel="stylesheet" type="text/css" href="{{ url_for('static', filename='style.css') }}">
+    <style>
+        body {
+            background-color: #ffd323
+        }
+    </style>
+</head>
+<body>
+    <a href="/" class="home-button-display">Home</a>
+    <h1>Food Menu</h1>
+    <table>
+        <thead>
+            <tr>
+                <th>Food ID</th>
+                <th>Food Name</th>
+                <th>Food Price</th>
+                <th>Food Category</th>
+            </tr>
+        </thead>
+        <tbody>
+            {% for food in food_list %}
+            <tr>
+                <td>{{ food.food_id}} </td>
+                <td>{{ food.name}} </td>
+                <td>{{ food.price}} </td>
+                <td>{{ food.category}} </td>
+            </tr>
+            {% endfor %}
+        </tbody>
+    </table>
+</body>
+</html>

@@ -1,0 +1,77 @@
+<!DOCTYPE html>
+<html lang="id">
+    <head>
+        <meta charset="UTF-8">
+        <meta name="viewport" content="width=device-width, initial-scale=1.0">
+        <title>Delete Order Record</title>
+        <link rel="stylesheet" href="{{ url_for('static', filename='style.css') }}">
+    </head>
+    <body class="ref-theme">
+        <h2>Delete Order </h2>
+        <div class = "form-container">
+            <form action="/deleteorder" method="post">
+                <label class="field-label" for="order_id">Order ID</label>
+                <input type="text" name="order_id" id="order_id" placeholder="Order ID">
+                <input type="submit" value="search" class="delete-button" >
+            </form>
+            <a href="/" class="home-button ">Home</a>
+        </div>
+    
+    {% if data_list %}
+    <h3>Record Founded</h3>
+    <table>
+        <thead>
+            <tr>
+                <th>Order ID</th>
+                <th>Customer Name</th>
+                <th>Food Name</th>
+                <th>Quantity</th>
+                <th>Total Price</th>
+                <th>Order Date</th>
+                <th>Action</th>
+            </tr>
+        </thead>
+        <tbody>
+            {% for item in data_list %}
+            <tr>
+                <td>{{ item.order_id}} </td>
+                <td>{{ item.customer_name}} </td>
+                <td>{{ item.food_id}} </td>
+                <td>{{ item.quantity}} </td>
+                <td>{{ item.total_price}} </td>
+                <td>{{ item.order_date}} </td>
+                
+                <td>
+                    <button onclick="confirmDelete('{{ item.order_id}}', '{{item.customer_name}}',
+                     '{{item.food_id}}', '{{item.quantity}}', '{{item.total_price}}', '{{item.order_date}}')"class="deleteButton">Delete</button>
+                </td>
+            </tr>
+            {% endfor %}
+        </tbody>
+    </table>
+    {% endif %}
+    <script>
+        function confirmDelete(order_id) {
+            const isConfirmed = confirm(`Are you sure want to delete ${order_id}?`);
+            if (isConfirmed){
+                fetch(`/order/${order_id}`,{
+                    method: `DELETE`,
+                })
+                .then(response => response.json())
+                .then(item => {
+                    if(item.message.includes("been removed")){
+                        alert("Record has been removed!");
+                        location.reload();
+                    }else{
+                        alert("Something trouble happen, found it!");
+                    }
+                })
+                .catch(error => {
+                    console.error("Error:", error);
+                    alert("Something troble happen when deleting data, idk why")
+                })
+            }
+        }
+    </script>
+    </body>
+</html>
