@@ -9,11 +9,8 @@ import os
 # app definition
 app = Flask(__name__)
 
-# database location
-DATABASE_PATH = 'C:/Users/u065505/Documents/sandona/mypy/gasfood/food.db'
-
 # database config
-app.config['SQLALCHEMY_DATABASE_URI'] = 'sqlite:///' + DATABASE_PATH
+app.config['SQLALCHEMY_DATABASE_URI'] = 'mysql+mysqlconnector://root:mSVCivGq4m22uLGjZLKD@containers-us-west-204.railway.app:8059/railway'
 app.config['SQLALCHEMY_TRACK_MODIFICATIONS'] = False
 
 # Swagger config
