@@ -6,13 +6,13 @@
         <title>Delete Order Record</title>
         <link rel="stylesheet" href="{{ url_for('static', filename='style.css') }}">
     </head>
-    <body class="ref-theme">
+    <body class="mcd-theme">
         <h2>Delete Order </h2>
         <div class = "form-container">
             <form action="/deleteorder" method="post">
-                <label class="field-label" for="order_id">Order ID</label>
+                <label  for="order_id">Order ID</label>
                 <input type="text" name="order_id" id="order_id" placeholder="Order ID">
-                <input type="submit" value="search" class="delete-button" >
+                <input type="submit" value="search" class="delete-button-red" >
             </form>
             <a href="/" class="home-button ">Home</a>
         </div>
@@ -36,14 +36,14 @@
             <tr>
                 <td>{{ item.order_id}} </td>
                 <td>{{ item.customer_name}} </td>
-                <td>{{ item.food_id}} </td>
+                <td>{{ item.name}} </td>
                 <td>{{ item.quantity}} </td>
                 <td>{{ item.total_price}} </td>
                 <td>{{ item.order_date}} </td>
                 
                 <td>
                     <button onclick="confirmDelete('{{ item.order_id}}', '{{item.customer_name}}',
-                     '{{item.food_id}}', '{{item.quantity}}', '{{item.total_price}}', '{{item.order_date}}')"class="deleteButton">Delete</button>
+                     '{{item.name}}', '{{item.quantity}}', '{{item.total_price}}', '{{item.order_date}}')"class="delete-button-red">Delete</button>
                 </td>
             </tr>
             {% endfor %}
@@ -52,7 +52,7 @@
     {% endif %}
     <script>
         function confirmDelete(order_id) {
-            const isConfirmed = confirm(`Are you sure want to delete ${order_id}?`);
+            const isConfirmed = confirm(`Are you sure want to delete order id: ${order_id}?`);
             if (isConfirmed){
                 fetch(`/order/${order_id}`,{
                     method: `DELETE`,

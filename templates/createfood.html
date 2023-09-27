@@ -6,14 +6,14 @@
         <title>Input Data Food</title>
         <link rel="stylesheet" href="{{ url_for('static', filename='style.css') }}">
     </head>
-    <body class="blue-theme">
-        <h2>Input New Food Data</h2>
+    <body class="mcd-theme">
+        <h2>Add Some Food</h2>
         <div class="form-container">
 
             {% if error %}
-                <p style="color: red;">{{ error}}</p>
+                <p style="color: #DA291C;">{{ error}}</p>
             {% endif%}
-
+            
             <form action="/addfood" method="post">
                 <label for="name">Food Name:</label>
                 <input type="text" name="name" id="name" placeholder="Add New Food" required>
@@ -25,8 +25,9 @@
                 <input type="text" name="category" id="category" placeholder="Add Category" required>
                 <br>
                 <input type="submit" value="Add">
-            </form>
-            <a href="/" class="home-button yellow-button">Home</a>
+            </form>   
+            <a href="/" class="home-button ">Home</a>
         </div>
+        
     </body>
 </html>

@@ -6,13 +6,13 @@
         <title>Delete Food Data</title>
         <link rel="stylesheet" href="{{ url_for('static', filename='style.css') }}">
     </head>
-    <body class="ref-theme">
+    <body class="mcd-theme">
         <h2>Delete Food </h2>
         <div class = "form-container">
             <form action="/deletefood" method="post">
-                <label class="field-label" for="name">Food Name</label>
+                <label for="name">Food Name</label>
                 <input type="text" name="name" id="name" placeholder="Food Name">
-                <input type="submit" value="search" class="delete-button" >
+                <input type="submit" value="search" class="delete-button-red" >
             </form>
             <a href="/" class="home-button ">Home</a>
         </div>
@@ -38,7 +38,7 @@
                 <td>{{ item.category}} </td>
                 <td>
                     <button onclick="confirmDelete('{{ item.food_id}}', '{{item.name}}',
-                     '{{item.price}}', '{{item.category}}')"class="deleteButton">Delete</button>
+                     '{{item.price}}', '{{item.category}}')"class="delete-button-red">Delete</button>
                 </td>
             </tr>
             {% endfor %}

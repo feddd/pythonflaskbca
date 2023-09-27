@@ -6,8 +6,8 @@
         <title>Input Data Food</title>
         <link rel="stylesheet" href="{{ url_for('static', filename='style.css') }}">
     </head>
-    <body class="blue-theme">
-        <h2>Input New Order Record</h2>
+    <body class="mcd-theme">
+        <h2>Create New Order</h2>
         <div class="form-container" >
 
             {% if error %}
@@ -21,7 +21,7 @@
                 <input type="date" name="order_date" id="order_date" placeholder="Add Order Date" required>
                 <br>
                 <label for="food_id">Food:</label>               
-                <select> name="food_id" id="food_id">
+                <select name="food_id" id="food_id">
                     {% if data_list %}
                         {% for data in data_list %}
                         <option value = {{data.food_id}} >{{ data.name}} - {{ data.price}} </option>

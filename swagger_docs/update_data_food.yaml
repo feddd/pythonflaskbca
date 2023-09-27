@@ -1,9 +1,9 @@
 openapi: 3.0.0
 info:
-  title: Get Food by ID
+  title: Update Food
   version: 1.0.0
 tags:
-  - name: Daftar API
+  - name: List API
 definitions:
   Food:
     type: object
@@ -24,16 +24,20 @@ definitions:
 parameters:
   - name: food_id
     in: path
-    description: keyword
+    description: Food id updated
     required: true
     type: integer
+  - in: body
+    name: body
+    descriptions: Food data will be update
+    required: true
+    schema:
+      $ref: '#/definitions/Food'
 
 response:
   200:
-    descriptions: Food List based on ID
+    descriptions: Food Data has been updated
     schema:
-      type: array
-      items:
-        $ref: '#/definitions/Food'
+      $ref: '#/definitions/Food'
   404:
-    descriptions: Data Not Found
+    descriptions: Food Data not found

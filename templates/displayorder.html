@@ -13,23 +13,27 @@
 </head>
 <body>
     <a href="/" class="home-button-display">Home</a>
-    <h1>Food Menu</h1>
+    <h1>Order List</h1>
     <table>
         <thead>
             <tr>
-                <th>Food ID</th>
+                <th>Order ID</th>
+                <th>Customer Name</th>
                 <th>Food Name</th>
-                <th>Food Price</th>
-                <th>Food Category</th>
+                <th>Quantity</th>
+                <th>Total Price</th>
+                <th>Order Date</th>
             </tr>
         </thead>
         <tbody>
-            {% for food in food_list %}
+            {% for order in order_list %}
             <tr>
-                <td>{{ food.food_id}} </td>
-                <td>{{ food.name}} </td>
-                <td>{{ food.price}} </td>
-                <td>{{ food.category}} </td>
+                <td>{{ order.order_id}} </td>
+                <td>{{ order.customer_name}} </td>
+                <td>{{ order.name}} </td>
+                <td>{{ order.quantity}} </td>
+                <td>{{ order.total_price}} </td>
+                <td>{{ order.order_date}} </td>
             </tr>
             {% endfor %}
         </tbody>

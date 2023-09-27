@@ -6,10 +6,12 @@
         <title>Search and Update Food</title>
         <link rel="stylesheet" href="{{ url_for('static', filename='style.css') }}">
     </head>
-    <body class="purple-theme">
+    <body class="mcd-theme">
     
         <h2>Search and Update Food</h2>
-
+        {% if error %}
+        <p style="color: red;">{{ error}}</p>
+        {% endif%}
         <div class="form-container">
             <form action="/updatefood" method="post">
                 <label for="name">Food Name:</label>

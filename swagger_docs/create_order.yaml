@@ -1,23 +1,23 @@
 openapi: 3.0.0
 
 info:
-  title: Tambah Order
+  title: Add Order
   version: 1.0.0
 
 tags:
-  - name: Daftar API
+  - name: List API
 
 parameters:
   - in: body
     name: body
-    description: Data Order yang akan ditambahkan
+    description: Order has been added
     required: true
     schema:
-      $ref: '#definitions/Order'
+      $ref: '#definitions/Orders'
     
 responses:
   201:
-    description: Data Order berhasil ditambahkan
+    description: Order has been added
     schema: 
       $ref: '#definitions/Order'
 
@@ -34,7 +34,7 @@ definitions:
       quantity:
         type: integer
       total_price:
-        type: float
+        type: number
       order_date:
         type: date
     required:

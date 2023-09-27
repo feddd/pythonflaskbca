@@ -4,16 +4,19 @@ from flask import redirect, url_for
 from flask_sqlalchemy import SQLAlchemy
 from flasgger import Swagger, swag_from
 from datetime import datetime
+
 import os
 
 # app definition
 app = Flask(__name__)
 
 # database location
-DATABASE_PATH = 'C:/Users/u065505/Documents/sandona/mypy/gasfood/food.db'
+# DATABASE_PATH = 'C:/Users/u065505/Documents/sandona/mypy/gasfood/food.db'
 
 # database config
-app.config['SQLALCHEMY_DATABASE_URI'] = 'sqlite:///' + DATABASE_PATH
+# app.config['SQLALCHEMY_DATABASE_URI'] = 'sqlite:///' + DATABASE_PATH
+app.config['SQLALCHEMY_DATABASE_URI'] = 'mysql+mysqlconnector://root:mSVCivGq4m22uLGjZLKD@containers-us-west-204.railway.app:8059/railway'
+
 app.config['SQLALCHEMY_TRACK_MODIFICATIONS'] = False
 
 # Swagger config
@@ -48,8 +51,7 @@ class Foods(db.Model):
 class Orders(db.Model):
     order_id = db.Column(db.Integer, primary_key=True)
     customer_name = db.Column(db.String(100),nullable=False)
-    # food_id = db.Column(db.Integer,db.ForeignKey('Foods.food_id'))
-    food_id = db.Column(db.Integer,nullable=False)   
+    food_id = db.Column(db.Integer, db.ForeignKey('foods.food_id'), nullable=False)
     quantity = db.Column(db.Integer,nullable=False)    
     total_price = db.Column(db.Float,nullable=False)
     order_date = db.Column(db.Date,nullable=False)
@@ -61,6 +63,12 @@ def create_tables():
 @app.route('/')
 def index():
     return render_template('index.html')
+@app.route('/indexfood')
+def indexfood():
+    return render_template('indexfood.html')
+@app.route('/indexorder')
+def indexorder():
+    return render_template('indexorder.html')
 
 #API Connection for Create Food Data
 @app.route('/food', methods=['POST'])
@@ -99,14 +107,10 @@ def create_order():
     db.session.commit()
     
     return jsonify({'message': 'Order successfully added'}),201
-# #koneksi API delete
-# @app.route('/karyawan<int:id_karyawan>', methods=['DELETE'])
-# @swag_from('swagger_docs/delete_data_bca.yaml')
-# def delete_karyawan():
-#     pass  
 
 #Connection API Show Food List
 @app.route('/display_food', methods=['GET'])
+@swag_from('swagger_docs/get_all_food.yaml')
 def get_all_food():
     food_list = []
     try:
@@ -132,7 +136,7 @@ def get_all_food():
 
 #API Connection to Show Food Data
 @app.route('/food<int:food_id>', methods=['GET'])
-@swag_from('swagger_docs/get_one_food.yaml')
+#@swag_from('swagger_docs/get_one_food.yaml')
 def get_one_food(food_id):
     pass  
 
@@ -150,7 +154,7 @@ def input_food():
             return render_template('createfood.html', error="All field must be filled!")
         
         #price number validation
-        if not int(price):
+        if not price.isdigit():
             return render_template('createfood.html', error="price must be in number!")
         
         #create object
@@ -176,13 +180,21 @@ def updatefood():
     return render_template('updatefood.html')
 
 @app.route('/update_food',methods=['POST'])
+@swag_from('swagger_docs/update_data_food.yaml')
 def update_food():
     try:
         food_id = request.form.get('food_id')
         name = request.form.get('name')
         price = request.form.get('price')
         category = request.form.get('category')
-
+        
+        #empty data validation
+        if not name or not price or not category:
+            return render_template('updatefood.html', error="All field must be filled!")
+        
+        #price number validation
+        if not price.isdigit():
+            return render_template('updatefood.html', error="price must be in number!")
         food = Foods.query.get(food_id)
     
         if not food:
@@ -195,24 +207,8 @@ def update_food():
     
         return redirect(url_for('get_all_food'))
     except Exception as e:
-        return jsonify({'message': f'Terjadi kesalahan: {str(e)}'}),500
+        return jsonify({'message': f'Something trouble: {str(e)}'}),500
 
-
-@app.route('/food/<int:food_id>',methods=['DELETE'])
-@swag_from('swagger_dcos/delete_data_food.yaml')
-def delete_food(food_id):
-    try:
-        food_to_delete = Foods.query.filter_by(food_id=food_id).first()
-        
-        if food_to_delete:
-            db.session.delete(food_to_delete)
-            db.session.commit()
-            return jsonify({'message': f'Food with ID {food_id} has been removed'}),200
-        else:
-            return jsonify({'message': f'Food with ID {food_id} not found'}),404
-    except Exception as e:
-        return jsonify({'message':f"Something troble happen! {e}"}),500
-    
 @app.route('/deletefood',methods=['GET', 'POST'])
 def deletefood():
     data_list = []
@@ -227,18 +223,35 @@ def deletefood():
         return render_template('error.html', message=error_message),500
     finally:
         return render_template('deletefood.html', data_list=data_list),500
+    
+@app.route('/food/<int:food_id>',methods=['DELETE'])
+@swag_from('swagger_docs/delete_data_food.yaml')
+def delete_food(food_id):
+    try:
+        food_to_delete = Foods.query.filter_by(food_id=food_id).first()
+        
+        if food_to_delete:
+            db.session.delete(food_to_delete)
+            db.session.commit()
+            return jsonify({'message': f'Food with ID {food_id} has been removed'}),200
+        else:
+            return jsonify({'message': f'Food with ID {food_id} not found'}),404
+    except Exception as e:
+        return jsonify({'message':f"Something troble happen! {e}"}),500
+    
 
-#Connection API Show Food List
+
+#Connection API Show Order List
 @app.route('/display_order', methods=['GET'])
-# @swag_from('swagger_docs/get_all_data.yaml')
+@swag_from('swagger_docs/get_all_order.yaml')
 def get_all_order():
     order_list = []
+    all_order = []
     try:
-        all_order = Orders.query.join
-        (Foods, Foods.food_id==Orders.food_id).add_columns
-        (Orders.order_id,Orders.customer_name,Orders.quantity,Orders.total_price,Orders.order_date,Foods.name).all()
-        
+        all_order = Orders.query.join(Foods, Orders.food_id==Foods.food_id).add_columns(Orders.order_id, Orders.customer_name, Orders.quantity, Orders.total_price, Orders.order_date, Foods.name).all()
+       
         for order in all_order:
+            print(order)
             order_data = {
                 'order_id': order.order_id,
                 'customer_name': order.customer_name,
@@ -248,6 +261,7 @@ def get_all_order():
                 'name' : order.name
             }  
             order_list.append(order_data)
+        
     except Exception as e:
         return render_template('error.html', message="Error : {}".format(str(e))),500
     finally:
@@ -258,6 +272,7 @@ def get_all_order():
         
 #Func to Add Order
 @app.route('/addorder', methods=['GET', 'POST'])
+# @swag_from('swagger_dcos/create_order.yaml')
 def input_order():
     if request.method == 'GET':
     
@@ -269,11 +284,20 @@ def input_order():
         customer_name = request.form.get('customer_name')
         food_id = request.form.get('food_id')
         quantity = request.form.get('quantity')
-        total_price = request.form.get('total_price')
+        
+        #empty data validation
+        if not customer_name or not food_id:
+            return render_template('createorder.html', error="All field must be filled!")
+        
+        #quantity number validation
+        if not quantity.isdigit():
+            return render_template('createorder.html', error="price must be in number!")
+        
         order_date = datetime.strptime(request.form.get('order_date'),'%Y-%m-%d')
-        # #empty data validation
-        # if not order_id or not customer_name or not quantity or not food_id:
-        #     return render_template('createorder.html', error="All field must be filled!")
+        keyword = Foods.query.filter(Foods.food_id==food_id).add_columns(Foods.price).first()
+
+        total_price = keyword.price * float(quantity)
+        
         #create object
         new_order = Orders(
             order_id=order_id,
@@ -290,6 +314,83 @@ def input_order():
         db.session.commit()
         return render_template('confirmation.html')
     return render_template('createorder.html', data_list=data_list)
+
+#Func to Update Order
+@app.route('/updateorder',methods=['GET', 'POST'])
+def updateorder():
+    if request.method == 'POST':
+        food_list = Foods.query.all()
+        keyword = request.form.get('order_id')
+        # data_list = Orders.query.filter(Orders.order_id.like(f"%{keyword}%")).all()
+        data_list = Orders.query.join(Foods, Orders.food_id==Foods.food_id).add_columns(Orders.order_id, Orders.customer_name, Foods.name, Orders.quantity, Orders.total_price, Orders.order_date).filter(Orders.order_id.like(f"%{keyword}%")).all()
+        return render_template('updateorder.html', data_list=data_list, food_list=food_list)
+    return render_template('updateorder.html')
+
+@app.route('/update_order',methods=['POST'])
+@swag_from('swagger_docs/update_data_order.yaml')
+def update_order():
+    try:
+        order_id = request.form.get('order_id')
+        customer_name = request.form.get('customer_name')
+        quantity = request.form.get('quantity')
+        food_id = request.form.get('food_id')
+        
+         #empty data validation
+        if not customer_name or not food_id:
+            return render_template('updateorder.html', error="All field must be filled!")
+        
+        #quantity number validation
+        if not quantity.isdigit():
+            return render_template('updateorder.html', error="price must be in number!")
+        keyword = Foods.query.filter(Foods.food_id==food_id).add_columns(Foods.price).first()
+        total_price = keyword.price * float(quantity)
+        order = Orders.query.get(order_id)
+    
+        if not order:
+            return jsonify({'message': 'Order not found'}),404
+    
+        order.customer_name = customer_name
+        order.quantity = quantity
+        order.food_id = food_id 
+        order.total_price = total_price 
+        db.session.commit()
+    
+        return redirect(url_for('get_all_order'))
+    except Exception as e:
+        return jsonify({'message': f'Something trouble: {str(e)}'}),500
+
+# delete order
+@app.route('/order/<int:order_id>',methods=['DELETE'])
+@swag_from('swagger_docs/delete_data_order.yaml')
+def delete_order(order_id):
+    try:
+        order_to_delete = Orders.query.filter_by(order_id=order_id).first()    
+            
+        if order_to_delete:
+            db.session.delete(order_to_delete)
+            db.session.commit()
+            return jsonify({'message': f'Order with ID {order_id} has been removed'}),200
+        else:
+            return jsonify({'message': f'Order with ID {order_id} not found'}),404
+    except Exception as e:
+        return jsonify({'message':f"Something trouble happen! {e}"}),500
+    
+@app.route('/deleteorder',methods=['GET', 'POST'])
+def deleteorder():
+    data_list = []
+    try:
+        if request.method == 'POST':
+            keyword = request.form.get('order_id')
+            # data_list = Orders.query.filter(Orders.order_id.like(f"%{keyword}%")).all()
+            data_list = Orders.query.join(Foods, Orders.food_id==Foods.food_id).add_columns(Orders.order_id, Orders.customer_name, Foods.name, Orders.quantity, Orders.total_price, Orders.order_date).filter(Orders.order_id.like(f"%{keyword}%")).all()
+
+    except Exception as e:
+        error_message = f"Something Trouble Happen!: {e}"
+        print(error_message)
+        return render_template('error.html', message=error_message),500
+    finally:
+        return render_template('deleteorder.html', data_list=data_list),500
+
 
 # if __name__ == '__main__':
 #     app.run(debug=True, port=5030)

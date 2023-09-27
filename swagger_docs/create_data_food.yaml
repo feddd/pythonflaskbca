@@ -1,28 +1,28 @@
 openapi: 3.0.0
 
 info:
-  title: Tambah Makanan
+  title: Add Food
   version: 1.0.0
 
 tags:
-  - name: Daftar API
+  - name: List API
 
 parameters:
   - in: body
     name: body
-    description: Data Makanan yang akan ditambahkan
+    description: Add Food
     required: true
     schema:
-      $ref: '#definitions/Makanan'
+      $ref: '#definitions/Food'
     
 responses:
   201:
-    description: Data makanan berhasil ditambahkan
+    description: Food Data Added
     schema: 
-      $ref: '#definitions/Makanan'
+      $ref: '#definitions/Food'
 
 definitions:
-  Makanan:
+  Food:
     type: object
     properties:
       food_id:
@@ -30,7 +30,7 @@ definitions:
       name:
         type: string
       price:
-        type: float
+        type: number
       category:
         type: string
     required:

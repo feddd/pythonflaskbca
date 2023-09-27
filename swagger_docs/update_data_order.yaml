@@ -1,0 +1,49 @@
+openapi: 3.0.0
+info:
+  title: Update Order
+  version: 1.0.0
+tags:
+  - name: List API
+definitions:
+  Order:
+    type: object
+    properties:
+      order_id:
+        type: integer
+        description: Food ID
+      customer_name:
+        type: string
+        description: Customer Name
+      name:
+        type: string
+        description: Food Name
+      quantity:
+        type: integer
+        description: Quantity
+      total_price:
+        type: number
+        description: Total Price
+      order_date:
+        type: string
+        description: Order Date
+
+parameters:
+  - name: order_id
+    in: path
+    description: Order id updated
+    required: true
+    type: integer
+  - in: body
+    name: body
+    descriptions: Order data will be update
+    required: true
+    schema:
+      $ref: '#/definitions/Order'
+
+response:
+  200:
+    descriptions: Order Data has been updated
+    schema:
+      $ref: '#/definitions/Order'
+  404:
+    descriptions: Order Data not found
