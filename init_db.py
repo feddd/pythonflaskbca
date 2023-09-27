@@ -1,7 +1,7 @@
 import sqlite3
 from sqlalchemy import create_engine, Column, Integer, String, Float, Date, MetaData, Table, ForeignKey
 
-DATABASE_URI = 'sqlite:///food.db'
+DATABASE_URI = 'mysql://root:mSVCivGq4m22uLGjZLKD@containers-us-west-204.railway.app:8059/railway'
 engine = create_engine(DATABASE_URI, echo=True)
 metadata = MetaData()
 
