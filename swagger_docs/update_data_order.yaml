@@ -8,25 +8,18 @@ definitions:
   Order:
     type: object
     properties:
-      order_id:
-        type: integer
-        description: Food ID
       customer_name:
         type: string
         description: Customer Name
-      name:
+      food_id:
         type: string
-        description: Food Name
+        description: Food ID
       quantity:
         type: integer
         description: Quantity
       total_price:
         type: number
-        description: Total Price
-      order_date:
-        type: string
-        description: Order Date
-
+        description: total price
 parameters:
   - name: order_id
     in: path
@@ -40,7 +33,7 @@ parameters:
     schema:
       $ref: '#/definitions/Order'
 
-response:
+responses:
   200:
     descriptions: Order Data has been updated
     schema:
