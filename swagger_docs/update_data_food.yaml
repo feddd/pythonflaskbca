@@ -9,7 +9,7 @@ definitions:
     type: object
     properties:
       food_id:
-        type: integer
+        type: string
         description: Food ID
       name:
         type: string
@@ -34,7 +34,7 @@ parameters:
     schema:
       $ref: '#/definitions/Food'
 
-response:
+responses:
   200:
     descriptions: Food Data has been updated
     schema:
