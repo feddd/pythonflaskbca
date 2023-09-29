@@ -19,18 +19,18 @@ responses:
   201:
     description: Order has been added
     schema: 
-      $ref: '#definitions/Order'
+      $ref: '#definitions/Orders'
 
 definitions:
-  Order:
+  Orders:
     type: object
     properties:
       order_id:
-        type: integer
+        type: string
       customer_name:
         type: string
       food_id:
-        type: integer
+        type: string
       quantity:
         type: integer
       total_price:
