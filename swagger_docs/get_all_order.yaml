@@ -5,7 +5,7 @@ info:
 tags:
   - name: List API
 definitions:
-  Food:
+  Order:
     type: object
     properties:
       order_id:
@@ -33,5 +33,5 @@ responses:
     schema:
       type: array
       items:
-        $ref: '#/definitions/Food'
+        $ref: '#/definitions/Order'
 
